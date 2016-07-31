@@ -1,0 +1,22 @@
+<?php
+define('DB_HOST', 'db.inndy.tw');
+define('DB_USER', 'hackme');
+define('DB_PASS', 'put your password here');
+define('DB_NAME', 'hackme');
+
+define('ADMIN_USER', 'r00t');
+define('ADMIN_PASS', 'r00t pa55w0rd');
+
+// web path ends without slash
+define('SCOREBOARD_PATH', '/scoreboard');
+
+define('SECRET', '$(head -c 48 /dev/urandom | base64)_____________________________');
+
+define('TG_API_KEY', '012345678:ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ');
+define('TG_CHAT_ID', '99999999');
+
+define('LOG_FILE', '/var/log/scoreboard.log');
+
+$notices = [
+    // your notices here
+];
