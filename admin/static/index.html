@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HackMe administration</title>
+  <script src="static/vue.min.js"></script>
+  <script src="static/jquery-2.2.4.min.js"></script>
+  <script src="static/bs3/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="static/style.css" media="all">
+  <link rel="stylesheet" href="static/bs3/css/bootstrap.css" media="all">
+</head>
+<body>
+  <template id="task">
+    <div class="task radbox">
+      <div class="fields">
+        <div class="field {{field}}"
+          v-for="field in fields">
+          <span class="name">{{ field | capitalize }}</span>
+          <span v-if="field == 'flag'">{{ task[field] | censored 0.4 }}</span>
+          <span v-else>{{ task[field] }}</span>
+        </div>
+      </div>
+      <div class="buttons">
+        <button @click="delete()" class="btn btn-danger">Delete</button>
+        <button @click="edit()" class="btn btn-info">Edit</button>
+      </div>
+    </div>
+  </template>
+
+  <template id="task_editor">
+    <div class="task-editor" v-show="edit_item !== null">
+      <div class="form">
+        <div class="form-group"
+          v-for="field in fields">
+            <label :for="'task-editor-' + field">{{field | capitalize}}</label>
+            <input :id="'task-editor-' + field" type="text" v-model="task[field]"
+             class="form-control">
+        </div>
+        <button class="btn btn-primary" @click="save">Save</button>
+        <button class="btn btn-danger" @click="cancel">Cancel</button>
+      </div>
+    </div>
+  </template>
+
+  <div class="jumbotron">
+    <div class="container">
+      <h1>Hackme Admin Panel</h1>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="app">
+
+      <div class="radbox">
+        <button class="btn btn-primary" @click="add_task">Add</button>
+        <label for="filter-type">Filter Type:</label>
+
+        <div class="btn-group">
+          <button class="btn btn-default dropdown-toggle" id="filter-type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{filter}} <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li v-for="type in types">
+              <a href="#{{type}}" @click="filter = type">{{type}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tasks">
+        <task-view :task="task" v-for="task in tasks" v-show="task.type == filter || filter == 'All'"></task-view>
+      </div>
+
+      <task-editor v-ref:editor></task-editor>
+    </div>
+  </div>
+
+  <script src="static/app.js"></script>
+</body>
+</html>

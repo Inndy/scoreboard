@@ -1,0 +1,64 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.radbox {
+    border: 1px solid #000;
+    padding: .8em;
+    margin: 1em 0;
+    border-radius: .4em;
+}
+
+.task-editor:before {
+    content: '';
+    background-color: rgba(0,0,0,.5);
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.task-editor {
+    z-index: 1;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.task-editor .form {
+    background-color: #fff;
+    z-index: 1;
+    padding: 2.5em;
+    border-radius: 1em;
+    min-width: 70vw;
+}
+
+.task .fields .field {
+    padding: .3em;
+    word-break: break-all;
+    line-height: 2em;
+}
+
+.task .fields .field .name {
+    color: #eee;
+    background-color: #444;
+    padding: .2em .3em;
+    margin-right: .1em;
+    border-radius: .2em;
+}
+
+.task .fields .field span:not(.name) {
+    font-family: monospace;
+}

@@ -1,0 +1,7 @@
+db = {
+    'database': 'scoreboard',
+    'host': 'localhost',
+    'port': 63306,
+    'user': 'scoreboard',
+    'passwd': '5c0r3b0ard--p455w0rd!!!!!!!!!!!!!'
+}
