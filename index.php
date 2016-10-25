@@ -113,7 +113,9 @@ if($_GET['logout'] === 'me') {
 
 if($_GET['declare'] === 'my_name') {
     $name = $_REQUEST['name'];
-    if(strlen($name) > 0 && preg_match('/^[A-Za-z0-9_]+$/', $name) !== 1 || strstr($name, 'flag') || strstr($name, 'FLAG')) {
+    if(strlen($name) > 0 && strlen($name) <= 32 &&
+        preg_match('/^[A-Za-z0-9_]+$/', $name) !== 1 ||
+        stristr($name, 'flag')) {
         $error = true;
         $msg = sprintf(
             '<div class="alert alert-danger">Invalid username: %s</div><script>setTimeout(function() { location.href = "%s"; }, 3000);</script>',
