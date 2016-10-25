@@ -194,7 +194,7 @@ if(strlen($name) > 0) {
         WHERE records.name = :who
     ');
     $stmt->execute(['who' => $name]);
-    $points = $stmt->fetchObject()->points;
+    $points = $stmt->fetchObject()->points * POINTS_MULTIPLY;
 } else {
     $tasks = $db->query('
         SELECT
@@ -373,7 +373,7 @@ ob_end_flush();
 <?php               else: ?>
                         <td><a href="#" class="no-action"><?=$task->name?></a></td>
 <?php               endif; ?>
-                        <td><?=$task->points?></td>
+                        <td><?=$task->points * POINTS_MULTIPLY?></td>
                         <td><?=$task->sol_count?></td>
                         <td><?=$task->text?></td>
                     </tr>
@@ -441,7 +441,7 @@ ob_end_flush();
                         <td><?=$man->name?></td>
 <?php endif; ?>
                         <td><?=$man->count?></td>
-                        <td><?=$man->points?></td>
+                        <td><?=$man->points * POINTS_MULTIPLY?></td>
                         <td><?=$man->time?></td>
                     </tr><?php endforeach; ?>
                 </tbody>

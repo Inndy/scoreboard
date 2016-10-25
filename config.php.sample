@@ -17,6 +17,8 @@ define('TG_CHAT_ID', '99999999');
 
 define('LOG_FILE', '/var/log/scoreboard.log');
 
+define('POINTS_MULTIPLY', 10);
+
 $notices = [
     // your notices here
 ];
