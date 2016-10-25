@@ -1,4 +1,6 @@
 <?php
+$page_start_time = microtime(true);
+
 require('config.php');
 require('cookie_session.php');
 
@@ -268,7 +270,7 @@ ob_end_flush();
             background-color: #f5f5f5;
         }
 
-        .footer p {
+        .footer span {
             line-height: 60px;
         }
     </style>
@@ -471,7 +473,11 @@ ob_end_flush();
 
     <footer class="footer">
         <div class="container">
-            <p class="text-muted">Copyright (c) 2016 Inndy Lin, All right reserved.</p>
+            <span class="text-muted">
+                Copyright &copy; 2016 Inndy Lin, MIT licesned.
+                Source code available on <a href="https://github.com/inndy/scoreboard">GitHub</a>.
+                Rendered in <?=sprintf("%3.4fms", (microtime(true) - $page_start_time) * 1000)?>.
+            </span>
         </div>
     </footer>
 
