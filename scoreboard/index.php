@@ -476,7 +476,7 @@ ob_end_flush();
     <footer class="footer">
         <div class="container">
             <span class="text-muted">
-                Copyright &copy; 2016 Inndy Lin, MIT licesned.
+                Copyright &copy; 2017 Inndy Lin, MIT licesned.
                 Source code available on <a href="https://github.com/inndy/scoreboard">GitHub</a>.
                 Rendered in <?=sprintf("%3.4fms", (microtime(true) - $page_start_time) * 1000)?>.
             </span>
