@@ -44,12 +44,19 @@ function timeto($time)
     $day = (int)($hour / 24);
     $hour = $hour % 24;
 
-    if($day) return sprintf("%d days %d hours", $day, $hour);
-    elseif($hour) return sprintf("%d hours %d min ago, $hour, $min");
-    elseif($min) return sprintf("%d min %d sec ago", $min, $sec);
+    if($day > 0) return sprintf("%d days %d hours", $day, $hour);
+    elseif($hour > 0) return sprintf("%d hours %d min ago", $hour, $min);
+    elseif($min > 0) return sprintf("%d min %d sec ago", $min, $sec);
     elseif($sec > 30) return sprintf("%d sec ago", $sec);
     else return "a few seconds ago";
 }
+
+function closure($f)
+{
+    return $f();
+}
+
+$GLOBALS['AKPts'] = sqlselect('SELECT SUM(`points`) FROM `tasks`') * POINTS_MULTIPLY;
 
 $statistics = [
     [
@@ -74,19 +81,82 @@ $statistics = [
     ],
     [
         'All Kill Points',
-        sqlselect('SELECT SUM(`points`) FROM `tasks`') * POINTS_MULTIPLY
+        $AKPts
     ],
     [
         'Top Player',
-        sqlselect('SELECT `name` FROM `rank_view`')
+        closure(function () use ($AKPts) {
+            $player = sqlselect('SELECT `name` FROM `rank_view`');
+            $pts = sqlselect('SELECT MAX(`points`) FROM `rank_view`') * POINTS_MULTIPLY;
+            $last_time = sqlselect('SELECT `last_time` FROM `rank_view`');
+            return sprintf("<code>%s</code> %dpts (%d%%), Last success submit time: %s", $player, $pts, $pts * 100 / $AKPts, $last_time);
+        })
     ],
     [
-        'Top Player Last Success Submit Time',
-        sqlselect('SELECT `last_time` FROM `rank_view`')
+        'Top Pwn-er',
+        sqlselect('
+            SELECT GROUP_CONCAT(CONCAT("<code>", `name`, " (", `points`, "pts, ", `count` , ")</code>") SEPARATOR ", ")
+            FROM (
+                SELECT
+                    `records`.`name` AS `name`,
+                    MAX(`records`.`time`) AS `last_time`,
+                    SUM(`tasks`.`points`) AS `points`,
+                    COUNT(`records`.`name`) AS `count`
+                FROM `records`
+                LEFT JOIN `tasks`
+                    ON `tasks`.`id` = `records`.`task_id`
+                WHERE `tasks`.`type` = "Pwn"
+                GROUP BY `records`.`name`
+                ORDER BY
+                    `points` DESC,
+                    `last_time`
+                LIMIT 5
+            ) AS `tmp`
+        ')
     ],
     [
-        'Top Player Points',
-        sqlselect('SELECT MAX(`points`) FROM `rank_view`') * POINTS_MULTIPLY
+        'Top Web-er',
+        sqlselect('
+            SELECT GROUP_CONCAT(CONCAT("<code>", `name`, " (", `points`, "pts, ", `count` , ")</code>") SEPARATOR ", ")
+            FROM (
+                SELECT
+                    `records`.`name` AS `name`,
+                    MAX(`records`.`time`) AS `last_time`,
+                    SUM(`tasks`.`points`) AS `points`,
+                    COUNT(`records`.`name`) AS `count`
+                FROM `records`
+                LEFT JOIN `tasks`
+                    ON `tasks`.`id` = `records`.`task_id`
+                WHERE `tasks`.`type` = "Web"
+                GROUP BY `records`.`name`
+                ORDER BY
+                    `points` DESC,
+                    `last_time`
+                LIMIT 5
+            ) AS `tmp`
+        ')
+    ],
+    [
+        'Top Reverser',
+        sqlselect('
+            SELECT GROUP_CONCAT(CONCAT("<code>", `name`, " (", `points`, "pts, ", `count` , ")</code>") SEPARATOR ", ")
+            FROM (
+                SELECT
+                    `records`.`name` AS `name`,
+                    MAX(`records`.`time`) AS `last_time`,
+                    SUM(`tasks`.`points`) AS `points`,
+                    COUNT(`records`.`name`) AS `count`
+                FROM `records`
+                LEFT JOIN `tasks`
+                    ON `tasks`.`id` = `records`.`task_id`
+                WHERE `tasks`.`type` = "Reversing"
+                GROUP BY `records`.`name`
+                ORDER BY
+                    `points` DESC,
+                    `last_time`
+                LIMIT 5
+            ) AS `tmp`
+        ')
     ],
     [
         'Least Success Submit Tasks',
