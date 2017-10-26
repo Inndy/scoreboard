@@ -17,6 +17,11 @@ $name = $_SESSION['name'];
 
 // $notices in config.php
 
+function h($s)
+{
+    return htmlentities($s, ENT_QUOTES | ENT_HTML5);
+}
+
 function pathto($path='')
 {
     return SCOREBOARD_PATH . '/' . $path;
@@ -119,7 +124,7 @@ if($_GET['declare'] === 'my_name') {
         $error = true;
         $msg = sprintf(
             '<div class="alert alert-danger">Invalid username: %s</div><script>setTimeout(function() { location.href = "%s"; }, 3000);</script>',
-            htmlentities($name),
+            h($name),
             pathto()
         );
         $name = null;
@@ -132,7 +137,7 @@ if($_GET['declare'] === 'my_name') {
         } else {
             $msg = sprintf(
                 '<div class="alert alert-danger">Invalid username: %s</div><script>setTimeout(function() { location.href = "%s"; }, 3000);</script>',
-                htmlentities($name),
+                h($name),
                 pathto()
             );
         }
@@ -307,7 +312,7 @@ ob_end_flush();
                         </form>
                     </li>
 
-                    <p class="navbar-text">Hi, <?=$name?> (<?=$points?:'0'?> pts)</p>
+                    <p class="navbar-text">Hi, <?=h($name)?> (<?=$points?:'0'?> pts)</p>
 <?php if($_SESSION['admin']): ?>
                     <p class="navbar-text administrator">Administrator</p>
 <?php endif; ?>
@@ -396,7 +401,7 @@ ob_end_flush();
         <h2>Submit Flag</h2>
 
         <form method="POST" class="form-horizontal" action="<?=pathto('?capture=the_flag')?>" role="form">
-            <input type="hidden" name="name" value="<?=$name?>">
+            <input type="hidden" name="name" value="<?=h($name)?>">
             <div class="input-group">
                 <input class="form-control" type="text" name="flag" placeholder="FLAG{Here is your flag}">
                 <span class="input-group-btn">
