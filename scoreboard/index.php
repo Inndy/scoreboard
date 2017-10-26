@@ -22,6 +22,16 @@ function h($s)
     return htmlentities($s, ENT_QUOTES | ENT_HTML5);
 }
 
+function valid_username($name)
+{
+    return (
+        strlen($name) > 0 &&
+        strlen($name) <= 32 &&
+        preg_match('/^[A-Za-z0-9_]+$/', $name) === 1 &&
+        stristr($name, 'flag') === false
+    );
+}
+
 function pathto($path='')
 {
     return SCOREBOARD_PATH . '/' . $path;
@@ -118,9 +128,7 @@ if($_GET['logout'] === 'me') {
 
 if($_GET['declare'] === 'my_name') {
     $name = $_REQUEST['name'];
-    if(strlen($name) > 0 && strlen($name) <= 32 &&
-        preg_match('/^[A-Za-z0-9_]+$/', $name) !== 1 ||
-        stristr($name, 'flag')) {
+    if(!valid_username($name)) {
         $error = true;
         $msg = sprintf(
             '<div class="alert alert-danger">Invalid username: %s</div><script>setTimeout(function() { location.href = "%s"; }, 3000);</script>',
