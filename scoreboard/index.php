@@ -309,6 +309,7 @@ ob_end_flush();
                     <li>
                         <a href="<?=pathto()?>">Scoreboard</a>
                     </li>
+                    <?php if(file_exists('extra_menu.php')) require('extra_menu.php'); ?>
                     <li>
                         <a href="https://www.inndy.tw/" target="_blank">Author</a>
                     </li>
@@ -495,6 +496,8 @@ ob_end_flush();
             </span>
         </div>
     </footer>
+
+    <?php if(file_exists('extra_footer.php')) require('extra_footer.php'); ?>
 
     <script>
         Array.prototype.slice.call(
